@@ -8,7 +8,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.tkinov.fidegar.dao.JdbcTemplateFidegarDAO;
+import com.tkinov.fidegar.dao.JdbcTemplateMatriculaDAO;
+import com.tkinov.fidegar.dao.JdbcTemplatePreguntaDAO;
+import com.tkinov.fidegar.dao.JdbcTemplateTokenDAO;
 import com.tkinov.fidegar.dao.LoginDAO;
+import com.tkinov.fidegar.dao.MatriculaDAO;
+import com.tkinov.fidegar.dao.PreguntaDAO;
+import com.tkinov.fidegar.dao.TokenDAO;
 import com.tkinov.fidegar.service.FidegarService;
 
 import oracle.jdbc.pool.OracleDataSource;
@@ -26,7 +32,7 @@ public class AppConfig {
         return dataSource;
 	}
 	
-	/*@Bean
+	@Bean
 	public FidegarService personService() {
 		return new FidegarService();
 	}
@@ -34,5 +40,20 @@ public class AppConfig {
 	@Bean
 	public LoginDAO jdbcLoginDAO() {
 		return new JdbcTemplateFidegarDAO();
-	}*/
+	}
+	
+	@Bean
+	public TokenDAO jdbcTokenDAO() {
+		return new JdbcTemplateTokenDAO();
+	}
+	
+	@Bean
+	public MatriculaDAO jdbcMatriculaDAO() {
+		return new JdbcTemplateMatriculaDAO();
+	}
+	
+	@Bean
+	public PreguntaDAO jdbcPreguntaDAO() {
+		return new JdbcTemplatePreguntaDAO();
+	}
 }

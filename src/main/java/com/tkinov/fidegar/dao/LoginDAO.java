@@ -1,12 +1,9 @@
 package com.tkinov.fidegar.dao;
 
-import java.util.List;
-
-import com.tkinov.fidegar.domain.Pregunta;
+import com.tkinov.fidegar.domain.Credencial;
+import com.tkinov.fidegar.domain.Usuario;
 
 public interface LoginDAO {
-	
-	List<Pregunta> findAll();
-	
-	
+	Usuario login(Credencial credenciales);
+	Usuario generaToken(Usuario usuario);
 }
