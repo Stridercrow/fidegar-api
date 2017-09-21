@@ -1,30 +1,27 @@
 package com.tkinov.fidegar.controller;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.tkinov.fidegar.domain.Pregunta;
 import com.tkinov.fidegar.domain.Response;
-import com.tkinov.fidegar.service.FidegarService;
+
 
 
 @RestController
 @RequestMapping("/fidegar-api")
 public class FidegarController {
-	
-	@Autowired
-	FidegarService fidegarService;
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	//@Autowired
+	//FidegarService fidegarService;
 	
     @RequestMapping("/login")
     public Response login() {
-    	
-    	List<Pregunta> preguntas = fidegarService.findAll();
+    	logger.debug("Realizando login");
+    	/*List<Pregunta> preguntas = fidegarService.findAll();
     	
     	for(Pregunta pregunta : preguntas) {
     		System.out.println(pregunta.toString());
-    	}
+    	}*/
     	
         return new Response(200, "Logino");
     }

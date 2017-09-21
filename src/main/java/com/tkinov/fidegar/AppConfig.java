@@ -26,7 +26,7 @@ public class AppConfig {
         return dataSource;
 	}
 	
-	@Bean
+	/*@Bean
 	public FidegarService personService() {
 		return new FidegarService();
 	}
@@ -34,5 +34,5 @@ public class AppConfig {
 	@Bean
 	public LoginDAO jdbcLoginDAO() {
 		return new JdbcTemplateFidegarDAO();
-	}
+	}*/
 }
