@@ -26,10 +26,7 @@ public class JdbcTemplateFidegarDAO implements LoginDAO, ResetDAO{
 	private TokenDAO tokenDAO;
 	
 	@Autowired
-	private MatriculaDAO matriculaDAO;
-	
-	@Autowired
-	private PreguntaDAO preguntaDAO;
+	private MatriculaDAO matriculaDAO;	
 	
 	@Transactional(readOnly=true)
 	public Usuario login(Credencial credenciales) {
@@ -44,15 +41,15 @@ public class JdbcTemplateFidegarDAO implements LoginDAO, ResetDAO{
 	@Transactional
 	public int reset(Dato datos) {
 		int estado = 0;
-		int matriculaid = matriculaDAO.getMatriculaIdFromMatricula(datos.getMAT());
-		if(tokenDAO.verificaToken(datos.getTOKN()) && preguntaDAO.verificaRespuesta(datos.getQTN(), datos.getANS(), matriculaid)) {
+		int matriculaId = matriculaDAO.getMatriculaIdFromMatricula(datos.getMAT());
+		if(tokenDAO.verificaToken(datos.getTOKN()) && matriculaId > 0) {
 			switch (datos.getTYPE()) {
-				case 1: estado = jdbcTemplate.update("UPDATE ADMINMATRICULA SET NIP = ? WHERE MATRICULAID = ?", "1234", matriculaid);
+				case 1: estado = jdbcTemplate.update("UPDATE ADMINMATRICULA SET NIP = ? WHERE MATRICULAID = ?", "1234", matriculaId);
 							//TODO Llamar a servicio para enviar a celular
 					break;
-				case 2: estado = jdbcTemplate.update("UPDATE ADMINMATRICULA SET NOCELULAR = ? WHERE MATRICULAID = ?", datos.getCEL(), matriculaid);
+				case 2: estado = jdbcTemplate.update("UPDATE ADMINMATRICULA SET NOCELULAR = ? WHERE MATRICULAID = ?", datos.getCEL(), matriculaId);
 					break;
-				case 3: estado = jdbcTemplate.update("UPDATE ADMINMATRICULA SET PREGUNTAID = ? AND RESPUESTA = ? WHERE MATRICULAID = ?", datos.getQTN(), datos.getANS(), matriculaid);
+				case 3: estado = jdbcTemplate.update("UPDATE ADMINMATRICULA SET PREGUNTAID = ? AND RESPUESTA = ? WHERE MATRICULAID = ?", datos.getQTN(), datos.getANS(), matriculaId);
 					break;
 				default : estado = 99;
 			}

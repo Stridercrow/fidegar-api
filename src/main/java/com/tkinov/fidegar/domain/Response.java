@@ -1,15 +1,14 @@
 package com.tkinov.fidegar.domain;
 
-public class Response {
+public class Response{
 	int CODE;
 	String DESC;
-	String TOKN;
+	String TOKN;	
 	
-	public Response(int CODE, String DESC, String TOKN) {
-		super();
+	public Response(int CODE, String DESC, String TOKN) {				
 		this.CODE = CODE;
 		this.DESC = DESC;
-		this.TOKN = TOKN;
+		this.TOKN = TOKN;		
 	}
 	
 	public int getCODE() {
@@ -30,6 +29,4 @@ public class Response {
 	public void setTOKN(String TOKN) {
 		this.TOKN = TOKN;
 	}
-	
-	
 }

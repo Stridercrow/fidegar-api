@@ -4,6 +4,7 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -21,12 +22,16 @@ import oracle.jdbc.pool.OracleDataSource;
 
 @Configuration
 public class AppConfig {
+	
+	@Autowired
+	AppProperties appProperies;
+	
 	@Bean
 	public DataSource dataSource() throws SQLException {		
 		OracleDataSource dataSource = new OracleDataSource();
-        dataSource.setUser("FIDEGAR_DB");
-        dataSource.setPassword("Fidegar12#");
-        dataSource.setURL("jdbc:oracle:thin:@//192.168.0.127:1521/XE");
+        dataSource.setUser(appProperies.getUser());
+        dataSource.setPassword(appProperies.getPwd());
+        dataSource.setURL(appProperies.getCadena());
         dataSource.setImplicitCachingEnabled(true);
         dataSource.setFastConnectionFailoverEnabled(true);
         return dataSource;
