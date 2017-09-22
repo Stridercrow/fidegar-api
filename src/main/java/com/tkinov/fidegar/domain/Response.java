@@ -3,7 +3,9 @@ package com.tkinov.fidegar.domain;
 public class Response{
 	int CODE;
 	String DESC;
-	String TOKN;	
+	String TOKN;
+	
+	public Response() {}
 	
 	public Response(int CODE, String DESC, String TOKN) {				
 		this.CODE = CODE;

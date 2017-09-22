@@ -15,7 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.tkinov.fidegar.domain.Credencial;
 import com.tkinov.fidegar.domain.Dato;
 import com.tkinov.fidegar.domain.Pregunta;
+import com.tkinov.fidegar.domain.Response;
 import com.tkinov.fidegar.domain.Usuario;
+import com.tkinov.fidegar.utils.TipoOperacion;
 
 public class JdbcTemplateFidegarDAO implements LoginDAO, ResetDAO{	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -28,6 +30,9 @@ public class JdbcTemplateFidegarDAO implements LoginDAO, ResetDAO{
 	@Autowired
 	private MatriculaDAO matriculaDAO;	
 	
+	@Autowired
+	private Response respuestaOperacion;
+	
 	@Transactional(readOnly=true)
 	public Usuario login(Credencial credenciales) {
 		List<Usuario> usuario = jdbcTemplate.query("SELECT * FROM USUARIO WHERE USUARIO = '" + credenciales.getUSR() + "' AND PASSWORD = '" + credenciales.getPWD() + "'", new UsuarioWrapper());
@@ -39,23 +44,34 @@ public class JdbcTemplateFidegarDAO implements LoginDAO, ResetDAO{
 	}
 	
 	@Transactional
-	public int reset(Dato datos) {
+	public Response reset(Dato datos) {
 		int estado = 0;
 		int matriculaId = matriculaDAO.getMatriculaIdFromMatricula(datos.getMAT());
-		if(tokenDAO.verificaToken(datos.getTOKN()) && matriculaId > 0) {
-			switch (datos.getTYPE()) {
-				case 1: estado = jdbcTemplate.update("UPDATE ADMINMATRICULA SET NIP = ? WHERE MATRICULAID = ?", "1234", matriculaId);
-							//TODO Llamar a servicio para enviar a celular
-					break;
-				case 2: estado = jdbcTemplate.update("UPDATE ADMINMATRICULA SET NOCELULAR = ? WHERE MATRICULAID = ?", datos.getCEL(), matriculaId);
-					break;
-				case 3: estado = jdbcTemplate.update("UPDATE ADMINMATRICULA SET PREGUNTAID = ? AND RESPUESTA = ? WHERE MATRICULAID = ?", datos.getQTN(), datos.getANS(), matriculaId);
-					break;
-				default : estado = 99;
+		if(matriculaId > 0) {
+			if(tokenDAO.verificaToken(datos.getTOKN()) && matriculaId > 0) {
+				switch (datos.getTYPE()) {
+					case 1: estado = jdbcTemplate.update("UPDATE ADMINMATRICULA SET NIP = ? WHERE MATRICULAID = ?", "1111", matriculaId);
+							generaRespuesta(estado, datos.getTYPE());
+								//TODO Llamar a servicio para enviar a celular						
+						break;
+					case 2: estado = jdbcTemplate.update("UPDATE ADMINMATRICULA SET NOCELULAR = ? WHERE MATRICULAID = ?", datos.getCEL(), matriculaId);
+							generaRespuesta(estado, datos.getTYPE());
+						break;
+					case 3: estado = jdbcTemplate.update("UPDATE ADMINMATRICULA SET PREGUNTAID = ? AND RESPUESTA = ? WHERE MATRICULAID = ?", datos.getQTN(), datos.getANS().toUpperCase(), matriculaId);
+							generaRespuesta(estado, datos.getTYPE());
+						break;
+					default : respuestaOperacion.setCODE(99); respuestaOperacion.setDESC("Operación no existe");
+				}
+			}else {
+				respuestaOperacion.setCODE(0);
+				respuestaOperacion.setDESC("Token inválido");
 			}
+		}else {
+			respuestaOperacion.setCODE(0);
+			respuestaOperacion.setDESC("No se encuentra la matrícula");
 		}
 		logger.info("Despues de ejecutar el query: " + estado);
-		return estado;		
+		return respuestaOperacion;		
 	}
 
 	@Transactional
@@ -64,6 +80,16 @@ public class JdbcTemplateFidegarDAO implements LoginDAO, ResetDAO{
 		usuario.setToken(UUID.randomUUID());
 		jdbcTemplate.update("UPDATE TOKEN SET TOKEN = ? WHERE USUARIOID = ?", usuario.getToken().toString(), usuario.getUsuarioId());
 		return usuario;
+	}
+	
+	private void generaRespuesta(int estado, int tipoOperacion) {
+		if(estado != 0) {
+			respuestaOperacion.setCODE(0);
+			respuestaOperacion.setDESC("Ocurrió un problema en el reset - " + TipoOperacion.valueOf(tipoOperacion).desc());							
+		}else {
+			respuestaOperacion.setCODE(1);
+			respuestaOperacion.setDESC("Reset exitoso - " + TipoOperacion.valueOf(tipoOperacion).desc());
+		}
 	}
 }
 

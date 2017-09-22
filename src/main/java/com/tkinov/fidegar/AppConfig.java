@@ -16,6 +16,7 @@ import com.tkinov.fidegar.dao.LoginDAO;
 import com.tkinov.fidegar.dao.MatriculaDAO;
 import com.tkinov.fidegar.dao.PreguntaDAO;
 import com.tkinov.fidegar.dao.TokenDAO;
+import com.tkinov.fidegar.domain.Response;
 import com.tkinov.fidegar.service.FidegarService;
 
 import oracle.jdbc.pool.OracleDataSource;
@@ -60,5 +61,10 @@ public class AppConfig {
 	@Bean
 	public PreguntaDAO jdbcPreguntaDAO() {
 		return new JdbcTemplatePreguntaDAO();
+	}
+	
+	@Bean
+	public Response response() {
+		return new Response();
 	}
 }

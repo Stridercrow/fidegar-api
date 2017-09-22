@@ -14,7 +14,6 @@ import com.tkinov.fidegar.domain.Dato;
 import com.tkinov.fidegar.domain.Response;
 import com.tkinov.fidegar.domain.Usuario;
 import com.tkinov.fidegar.service.FidegarService;
-import com.tkinov.fidegar.utils.TipoOperacion;
 
 
 
@@ -45,22 +44,22 @@ public class FidegarController {
     
     @RequestMapping(value = "/reset", method = RequestMethod.POST)
     public ResponseEntity<Response> reset(@RequestBody Dato datos) {
-    	int estado;
+    	Response respuesta;
     	logger.info("Operacion reset: " + datos.getTYPE());
     	logger.info("Datos reset: " + datos.toString());
     	
-    	if(fidegarService.validaDatosEntrada(datos)) {
-	    	estado = fidegarService.reset(datos);
-	    	if(estado > 0) {
-	    		if(estado == 99)
+    	if(fidegarService.validaNoNulo(datos)) {
+	    	respuesta = fidegarService.reset(datos);
+	    	if(respuesta.getCODE() > 0) {
+	    		if(respuesta.getCODE() == 99)
 	    			return ResponseEntity.status(HttpStatus.NOT_FOUND).
-	    								  body(new Response(0, "No se encontro la operacion", null));
+	    								  body(respuesta);
 	    		else
 	    			return ResponseEntity.status(HttpStatus.OK)
-	    								 .body(new Response(1, "Reset " + TipoOperacion.valueOf(datos.getTYPE()).desc()  + " realizado exitosamente", null));
+	    								 .body(respuesta);
 	    	}else{
 	    		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).
-	    							  body(new Response(0, "No autorizado, verificar token - reset " + TipoOperacion.valueOf(datos.getTYPE()).desc(), null));
+	    							  body(respuesta);
 	    	}
     	}else {
     		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).
