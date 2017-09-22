@@ -7,9 +7,9 @@ public class Response {
 	
 	public Response(int CODE, String DESC, String TOKN) {
 		super();
-		CODE = TODE;
-		DESC = DESC;
-		TOKN = TOKN;
+		this.CODE = CODE;
+		this.DESC = DESC;
+		this.TOKN = TOKN;
 	}
 	
 	public int getCODE() {
