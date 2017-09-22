@@ -1,47 +1,54 @@
 package com.tkinov.fidegar.domain;
 
 public class Dato {
-	private String matricula;
-	private String actualiza;
-	private int preguntaId;
-	private String respuesta;
-	private String token;
+	private String TOKN;
+	private int TYPE;
+	private String MAT;
+	private int QTN;
+	private String ANS;
+	private String CEL;
 	
-	public String getMatricula() {
-		return matricula;
+	public String getTOKN() {
+		return TOKN;
 	}
-	public void setMatricula(String matricula) {
-		this.matricula = matricula;
+	public void setTOKN(String tOKN) {
+		TOKN = tOKN;
 	}
-	public String getActualiza() {
-		return actualiza;
+	public int getTYPE() {
+		return TYPE;
 	}
-	public void setActualiza(String actualiza) {
-		this.actualiza = actualiza;
+	public void setTYPE(int tYPE) {
+		TYPE = tYPE;
 	}
-	public int getPreguntaId() {
-		return preguntaId;
+	public String getMAT() {
+		return MAT;
 	}
-	public void setPreguntaId(int preguntaId) {
-		this.preguntaId = preguntaId;
+	public void setMAT(String mAT) {
+		MAT = mAT;
 	}
-	public String getRespuesta() {
-		return respuesta;
+	public int getQTN() {
+		return QTN;
 	}
-	public void setRespuesta(String respuesta) {
-		this.respuesta = respuesta;
+	public void setQTN(int qTN) {
+		QTN = qTN;
 	}
-	public String getToken() {
-		return token;
+	public String getANS() {
+		return ANS;
 	}
-	public void setToken(String token) {
-		this.token = token;
+	public void setANS(String aNS) {
+		ANS = aNS;
 	}
+	public String getCEL() {
+		return CEL;
+	}
+	public void setCEL(String cEL) {
+		CEL = cEL;
+	}
+	
 	@Override
 	public String toString() {
-		return "Dato [matricula=" + matricula + ", actualiza=" + actualiza + ", preguntaId=" + preguntaId
-				+ ", respuesta=" + respuesta + ", token=" + token + "]";
+		return "Dato [TOKN=" + TOKN + ", TYPE=" + TYPE + ", MAT=" + MAT + ", QTN=" + QTN + ", ANS=" + ANS + ", CEL="
+				+ CEL + "]";
 	}
 	
-		
 }

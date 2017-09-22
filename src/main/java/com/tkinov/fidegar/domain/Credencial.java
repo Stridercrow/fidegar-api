@@ -2,20 +2,22 @@ package com.tkinov.fidegar.domain;
 
 public class Credencial {
 	
-	private String usuario;
-	private String password;
+	private String USR;
+	private String PWD;
 	
-	public String getUsuario() {
-		return usuario;
+	public String getUSR() {
+		return USR;
 	}
-	public void setUsuario(String usuario) {
-		this.usuario = usuario;
+	public void setUSR(String uSR) {
+		USR = uSR;
 	}
-	public String getPassword() {
-		return password;
+	public String getPWD() {
+		return PWD;
 	}
-	public void setPassword(String password) {
-		this.password = password;
+	public void setPWD(String pWD) {
+		PWD = pWD;
 	}
+	
+	
 
 }

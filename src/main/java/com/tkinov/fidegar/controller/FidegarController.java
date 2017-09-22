@@ -25,35 +25,35 @@ public class FidegarController {
 	
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public Response login(@RequestBody Credencial credenciales) {
-    	Usuario usuarioAutenticado;    	
-    	Response response = new Response(400, "Bad Request", null);
+    	Usuario usuarioAutenticado;
+    	Response response = new Response(0, "Bad Request", null);
     	logger.debug("Realizando login");
     	if(credenciales != null) {
     		usuarioAutenticado = fidegarService.login(credenciales);
     		if(usuarioAutenticado != null) {
     			usuarioAutenticado = fidegarService.generaToken(usuarioAutenticado);
     			logger.debug("Usuario con token: " + usuarioAutenticado.toString());
-    			response = new Response(200, "Login exitoso", usuarioAutenticado.getToken().toString());
+    			response = new Response(1, "Login exitoso", usuarioAutenticado.getToken().toString());
     		}else {
-    			response = new Response(403, "Credenciales inválidas", null);
+    			response = new Response(0, "Credenciales inválidas", null);
     		}
     	}
     	return response;    	
     }
     
     @RequestMapping(value = "/reset", method = RequestMethod.POST)
-    public Response reset(@RequestParam(value="tipo") String tipo, @RequestBody Dato datos) {
+    public Response reset(@RequestBody Dato datos) {
     	int estado;
-    	logger.info("Operacion reset: " + tipo);
+    	logger.info("Operacion reset: " + datos.getTYPE());
     	logger.info("Datos reset: " + datos.toString());
     	
-    	estado = fidegarService.reset(tipo, datos);
+    	estado = fidegarService.reset(datos);
     	if(estado > 0)
     		if(estado == 99)
-    			return new Response(404, "No se encontro la operacion", null);
+    			return new Response(0, "No se encontro la operacion", null);
     		else
-    			return new Response(200, "Reset " + tipo + " realizado exitosamente", null);
+    			return new Response(1, "Reset " + datos.getTYPE() + " realizado exitosamente", null);
     	else
-    	return new Response(403, "No autorizado, verificar token, respuesta - reset " + tipo, null);
+    	return new Response(0, "No autorizado, verificar token, respuesta - reset " + datos.getTYPE(), null);
     }
 }

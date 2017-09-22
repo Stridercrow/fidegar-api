@@ -27,7 +27,7 @@ public class FidegarService {
 	/*public int reset(String tipo, Usuario usuario, Dato dato) {
 		return resetDAO.reset(tipo, usuario, dato);
 	}*/
-	public int reset(String tipo, Dato dato) {
-		return resetDAO.reset(tipo, dato);
+	public int reset(Dato dato) {
+		return resetDAO.reset(dato);
 	}
 }

@@ -26,7 +26,7 @@ public class AppConfig {
 		OracleDataSource dataSource = new OracleDataSource();
         dataSource.setUser("FIDEGAR_DB");
         dataSource.setPassword("Fidegar12#");
-        dataSource.setURL("jdbc:oracle:thin:@//localhost:1521/XE");
+        dataSource.setURL("jdbc:oracle:thin:@//192.168.0.127:1521/XE");
         dataSource.setImplicitCachingEnabled(true);
         dataSource.setFastConnectionFailoverEnabled(true);
         return dataSource;

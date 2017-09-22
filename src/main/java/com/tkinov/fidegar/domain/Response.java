@@ -1,33 +1,34 @@
 package com.tkinov.fidegar.domain;
 
 public class Response {
-	int respCodigo;
-	String respDescripcion;
-	String token;
+	int CODE;
+	String DESC;
+	String TOKN;
 	
-	public Response(int respCodigo, String respDescripcion, String token) {
-		this.respCodigo = respCodigo;
-		this.respDescripcion = respDescripcion;
-		this.token = token;
+	public Response(int CODE, String DESC, String TOKN) {
+		super();
+		CODE = TODE;
+		DESC = DESC;
+		TOKN = TOKN;
 	}
 	
-	public int getRespCodigo() {
-		return respCodigo;
+	public int getCODE() {
+		return CODE;
 	}
-	public void setRespCodigo(int respCodigo) {
-		this.respCodigo = respCodigo;
+	public void setCODE(int CODE) {
+		this.CODE = CODE;
 	}
-	public String getRespDescripcion() {
-		return respDescripcion;
+	public String getDESC() {
+		return DESC;
 	}
-	public void setRespDescripcion(String respDescripcion) {
-		this.respDescripcion = respDescripcion;
+	public void setDESC(String DESC) {
+		this.DESC = DESC;
 	}
-	public String getToken() {
-		return token;
+	public String getTOKN() {
+		return TOKN;
 	}
-	public void setToken(String token) {
-		this.token = token;
+	public void setTOKN(String TOKN) {
+		this.TOKN = TOKN;
 	}
 	
 	

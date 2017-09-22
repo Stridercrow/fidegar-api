@@ -33,7 +33,7 @@ public class JdbcTemplateFidegarDAO implements LoginDAO, ResetDAO{
 	
 	@Transactional(readOnly=true)
 	public Usuario login(Credencial credenciales) {
-		List<Usuario> usuario = jdbcTemplate.query("SELECT * FROM USUARIO WHERE USUARIO = '" + credenciales.getUsuario() + "' AND PASSWORD = '" + credenciales.getPassword() + "'", new UsuarioWrapper());
+		List<Usuario> usuario = jdbcTemplate.query("SELECT * FROM USUARIO WHERE USUARIO = '" + credenciales.getUSR() + "' AND PASSWORD = '" + credenciales.getPWD() + "'", new UsuarioWrapper());
 		logger.debug("Usuario autenticado: " + usuario.size());
 		if(usuario.size() == 0)
 			return null;
@@ -42,25 +42,26 @@ public class JdbcTemplateFidegarDAO implements LoginDAO, ResetDAO{
 	}
 	
 	@Transactional
-	public int reset(String tipo, Dato datos) {
+	public int reset(Dato datos) {
 		int estado = 0;
-		int matriculaid = matriculaDAO.getMatriculaIdFromMatricula(datos.getMatricula());
-		if(tokenDAO.verificaToken(datos.getToken()) && preguntaDAO.verificaRespuesta(datos.getPreguntaId(), datos.getRespuesta(), matriculaid)) {
-			switch (tipo) {
-			case "nip": estado = jdbcTemplate.update("UPDATE ADMINMATRICULA SET NIP = ? WHERE MATRICULAID = ?", datos.getActualiza(), matriculaid); 
-				break;
-			case "no-celular": estado = jdbcTemplate.update("UPDATE ADMINMATRICULA SET NOCELULAR = ? WHERE MATRICULAID = ?", datos.getActualiza(), matriculaid);
-				break;
-			case "respuesta-secreta": estado = jdbcTemplate.update("UPDATE ADMINMATRICULA SET RESPUESTA = ? WHERE MATRICULAID = ?", datos.getActualiza(), matriculaid);
-				break;
-			default : estado = 99;
-			}			
+		int matriculaid = matriculaDAO.getMatriculaIdFromMatricula(datos.getMAT());
+		if(tokenDAO.verificaToken(datos.getTOKN()) && preguntaDAO.verificaRespuesta(datos.getQTN(), datos.getANS(), matriculaid)) {
+			switch (datos.getTYPE()) {
+				case 1: estado = jdbcTemplate.update("UPDATE ADMINMATRICULA SET NIP = ? WHERE MATRICULAID = ?", "1234", matriculaid);
+							//TODO Llamar a servicio para enviar a celular
+					break;
+				case 2: estado = jdbcTemplate.update("UPDATE ADMINMATRICULA SET NOCELULAR = ? WHERE MATRICULAID = ?", datos.getCEL(), matriculaid);
+					break;
+				case 3: estado = jdbcTemplate.update("UPDATE ADMINMATRICULA SET PREGUNTAID = ? AND RESPUESTA = ? WHERE MATRICULAID = ?", datos.getQTN(), datos.getANS(), matriculaid);
+					break;
+				default : estado = 99;
+			}
 		}
 		logger.info("Despues de ejecutar el query: " + estado);
 		return estado;		
 	}
 
-	@Override
+	@Transactional
 	public Usuario generaToken(Usuario usuario) {
 		logger.debug("Generando Token");
 		usuario.setToken(UUID.randomUUID());
